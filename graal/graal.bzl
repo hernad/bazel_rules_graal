@@ -62,6 +62,9 @@ def _graal_binary_implementation(ctx):
             paths.append("/bin")
             if "/usr/bin" not in path_set:
                 paths.append("/usr/bin")
+    else:
+        print("windows path separator")
+    
     env = {}
     env["PATH"] = ctx.configuration.host_path_separator.join(paths)
 
