@@ -104,7 +104,7 @@ def _graal_binary_implementation(ctx):
 
 
 def _graal_native_image():
-    return "native-image.img"
+    return "native-image.cmd"
 
 
 #g_graal_native_image = select({
