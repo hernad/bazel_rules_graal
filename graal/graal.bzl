@@ -88,7 +88,7 @@ def _graal_binary_implementation(ctx):
     args.add("-H:Name=%s" % ctx.outputs.bin.path)
     args.add("-H:CCompilerPath=%s" % c_compiler_path)
 
-    print("native image args=" + "#".join(args))
+    print(args))
 
     if len(ctx.attr.native_image_features) > 0:
         args.add("-H:Features={entries}".format(entries=",".join(ctx.attr.native_image_features)))
