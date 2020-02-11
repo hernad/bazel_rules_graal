@@ -10,11 +10,6 @@ graal_bindist_repository(
     name = "graal",
     version = "19.3.1",
     java_version = "8",
-    #extension = "tar.gz"
-    #extension = select({
-    #    "@bazel_tools/platforms:windows": "zip",
-	#"@bazel_tools/platforms:linux": "tar.gz"
-    #})
 )
 
 git_repository(
