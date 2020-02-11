@@ -96,24 +96,24 @@ def _graal_bindist_repository_impl(ctx):
         return
     else:
         print("getting native-image ...")
+        # download native image
+        native_image_config = _graal_native_image_version_configs[version]
+        native_image_sha = native_image_config["sha"][java_version][platform]
+        native_image_urls = [url.format(**format_args) for url in native_image_config["urls"]]
 
-    # download native image
-    native_image_config = _graal_native_image_version_configs[version]
-    native_image_sha = native_image_config["sha"][java_version][platform]
-    native_image_urls = [url.format(**format_args) for url in native_image_config["urls"]]
+        ctx.download(
+            url = native_image_urls,
+            sha256 = native_image_sha,
+            output = "native-image-installer.jar"
+        )
 
-    ctx.download(
-        url = native_image_urls,
-        sha256 = native_image_sha,
-        output = "native-image-installer.jar"
-    )
-
-    exec_result = ctx.execute(["bin/gu", "install", "--local-file", "native-image-installer.jar"], quiet=False)
-    if exec_result.return_code != 0:
-        fail("Unable to install native image:\n{stdout}\n{stderr}".format(stdout=exec_result.stdout, stderr=exec_result.stderr))
+        exec_result = ctx.execute(["bin/gu", "install", "--local-file", "native-image-installer.jar"], quiet=False)
+        if exec_result.return_code != 0:
+            fail("Unable to install native image:\n{stdout}\n{stderr}".format(stdout=exec_result.stdout, stderr=exec_result.stderr))
 
     ctx.file("BUILD", """exports_files(glob(["**/*"]))""")
     ctx.file("WORKSPACE", "workspace(name = \"{name}\")".format(name = ctx.name))
+
 
 graal_bindist_repository = repository_rule(
     attrs = {
