@@ -83,7 +83,124 @@ def _graal_binary_implementation(ctx):
     env["PATH"] = ctx.configuration.host_path_separator.join(paths)
 
     args = ctx.actions.args()
-    args.add("--no-server")
+    
+    #    
+    #$ bazel-bazel_rules_graal/external/graal/bin/native-image  --help
+    #
+    #GraalVM native-image building tool
+    #
+    #This tool can be used to generate an image that contains ahead-of-time compiled Java code.
+    #
+    #Usage: native-image [options] class [imagename] [options]
+    #           (to build an image for a class)
+    #   or  native-image [options] -jar jarfile [imagename] [options]
+    #           (to build an image for a jar file)
+    #where options include:
+    #    -cp <class search path of directories and zip/jar files>
+    #    -classpath <class search path of directories and zip/jar files>
+    #    --class-path <class search path of directories and zip/jar files>
+    #                          A : separated list of directories, JAR archives,
+    #                          and ZIP archives to search for class files.
+    #    -D<name>=<value>      set a system property
+    #    -J<flag>              pass <flag> directly to the JVM running the image generator
+    #    -O<level>             0 - no optimizations, 1 - basic optimizations (default).
+    #    --verbose             enable verbose output
+    #    --version             print product version and exit
+    #    --help                print this help message
+    #    --help-extra          print help on non-standard options
+    #
+    #    --allow-incomplete-classpath
+    #                          allow image building with an incomplete class path: report type
+    #                          resolution errors at run time when they are accessed the first
+    #                          time, instead of during image building
+    #    --auto-fallback       build stand-alone image if possible
+    #    --enable-all-security-services
+    #                          add all security service classes to the generated image.
+    #    --enable-http         enable http support in the generated image
+    #    --enable-https        enable https support in the generated image
+    #    --enable-url-protocols
+    #                          list of comma separated URL protocols to enable.
+    #    --features            a comma-separated list of fully qualified Feature implementation
+    #                          classes
+    #    --force-fallback      force building of fallback image
+    #    --initialize-at-build-time
+    #                          a comma-separated list of packages and classes (and implicitly all
+    #                          of their superclasses) that are initialized during image
+    #                          generation. An empty string designates all packages.
+    #    --initialize-at-run-time
+    #                          a comma-separated list of packages and classes (and implicitly all
+    #                          of their subclasses) that must be initialized at runtime and not
+    #                          during image building. An empty string is currently not
+    #                          supported.
+    #    --no-fallback         build stand-alone image or report failure
+    #    --report-unsupported-elements-at-runtime
+    #                          report usage of unsupported methods and fields at run time when
+    #                          they are accessed the first time, instead of as an error during
+    #                          image building
+    #    --shared              build shared library
+    #    --static              build statically linked executable (requires static libc and zlib)
+    #    -da                   disable assertions in the generated image
+    #    -ea                   enable assertions in the generated image
+    #
+    #Available macro-options are:
+    #    --language:nfi
+    #    --language:js
+    #    --language:regex
+    #    --language:llvm
+    #    --tool:coverage
+    #    --tool:profiler
+    #    --tool:chromeinspector
+    #    --tool:agentscript
+
+
+    # bazel-bazel_rules_graal/external/graal/bin/native-image  --expert-options
+    #-H:±AllowIncompleteClasspath                 Allow image building with an incomplete class path: report type resolution errors at run time when they are accessed the
+    #                                             first time, instead of during image building. Default: - (disabled).
+    #-H:±AllowVMInspection                        Enables features that allow the VM to be inspected during runtime. Default: - (disabled).
+    #-H:CCompilerOption=...                       Provide custom C compiler option used for query code compilation. Default: None
+    #-H:CCompilerPath=...                         Provide custom path to C compiler used for query code compilation and linking. Default: None
+    #-H:CPUFeatures=...                           Comma separated list of CPU features that will be used for image generation on the AMD64 platform. Features SSE and SSE2
+    #                                             are enabled by default. Other available features are: CX8, CMOV, FXSR, HT, MMX, AMD_3DNOW_PREFETCH, SSE3, SSSE3, SSE4A,
+    #                                             SSE4_1, SSE4_2, POPCNT, LZCNT, TSC, TSCINV, AVX, AVX2, AES, ERMS, CLMUL, BMI1, BMI2, RTM, ADX, AVX512F, AVX512DQ,
+    #                                             AVX512PF, AVX512ER, AVX512CD, AVX512BW. Default: None
+    #-H:CStandard="C89"                           C standard to use in header files. Possible values are: [C89, C99, C11].
+    #-H:Class=""                                  Class containing the default entry point method. Optional if --shared is used.
+    #-H:ClassInitialization=...                   A comma-separated list of classes appended with their initialization strategy (':build_time', ':rerun', or ':run_time').
+    #                                             Default: None
+    #-H:CompilerBackend="lir"                     Backend used by the compiler.
+    #-H:ConfigurationFileDirectories=...          Directories directly containing configuration files for dynamic features at runtime. Default: None
+    #-H:ConfigurationResourceRoots=...            Resource path above configuration resources for dynamic features at runtime. Default: None
+    #-H:DynamicProxyConfigurationFiles=...        One or several (comma-separated) paths to JSON files that specify lists of interfaces that define Java proxy classes.
+    #                                             Default: None
+    #-H:DynamicProxyConfigurationResources=...    Resources describing program elements to be made available for reflection (see ProxyConfigurationFiles). Default: None
+    #-H:IncludeResourceBundles=...                Comma separated list of bundles to be included into the image. Default: None
+    #-H:IncludeResources=...                      Regexp to match names of resources to be included in the image. Default: None
+    #-H:JNIConfigurationFiles=...                 Files describing program elements to be made accessible via JNI (for syntax, see ReflectionConfigurationFiles). Default:
+    #                                             None
+    #-H:JNIConfigurationResources=...             Resources describing program elements to be made accessible via JNI (see JNIConfigurationFiles). Default: None
+    #-H:±JNIVerboseLookupErrors                   Report information about known JNI elements when lookup fails. Default: - (disabled).
+    #-H:Name=""                                   Name of the output file to be generated.
+    #-H:±NativeArchitecture                       Overrides CPUFeatures and uses the native architecture, i.e., the architecture of a machine that builds an image.
+    #                                             NativeArchitecture takes precedence over CPUFeatures. Default: - (disabled).
+    #-H:Optimize=2                                Control native-image code optimizations: 0 - no optimizations, 1 - basic optimizations, 2 - aggressive optimizations.
+    #-H:Path="/home/hernad/bazel_rules_graal/svmbuild"
+    #                                             Directory of the image file to be generated.
+    #-H:ReflectionConfigurationFiles=...          One or several (comma-separated) paths to JSON files that specify which program elements should be made available via
+    #                                             reflection. Default: None
+    #-H:ReflectionConfigurationResources=...      Resources describing program elements to be made available for reflection (see ReflectionConfigurationFiles). Default:
+    #                                             None
+    #-H:±ReportUnsupportedElementsAtRuntime       Report usage of unsupported methods and fields at run time when they are accessed the first time, instead of as an error
+    #                                             during image building. Default: - (disabled).
+    #-H:ResourceConfigurationFiles=...            Files describing Java resources to be included in the image. Default: None
+    #-H:ResourceConfigurationResources=...        Resources describing Java resources to be included in the image. Default: None
+    #-H:±RuntimeAssertions                        Enable or disable Java assert statements at run time. Default: - (disabled).
+    #-H:SubstitutionFiles=...                     Comma-separated list of file names with declarative substitutions. Default: None
+    #-H:SubstitutionResources=...                 Comma-separated list of resource file names with declarative substitutions. Default: None
+
+
+    
+    #args.add("--no-server")
+
     args.add("-cp", ":".join([f.path for f in classpath_depset.to_list()]))
     args.add("-H:Class=%s" % ctx.attr.main_class)
     args.add("-H:Name=%s" % ctx.outputs.bin.path)
@@ -94,10 +211,17 @@ def _graal_binary_implementation(ctx):
         args.add("-H:CCompilerPath=%s" % c_compiler_path)
         
 
+    args.add("--verbose")
+
     print(args)
 
     if len(ctx.attr.native_image_features) > 0:
         args.add("-H:Features={entries}".format(entries=",".join(ctx.attr.native_image_features)))
+
+    # --initialize-at-build-time
+    #                      a comma-separated list of packages and classes (and implicitly all
+    #                      of their superclasses) that are initialized during image
+    #                      generation. An empty string designates all packages.
 
     if len(ctx.attr.initialize_at_build_time) > 0:
         args.add("--initialize-at-build-time={entries}".format(entries=",".join(ctx.attr.initialize_at_build_time)))
