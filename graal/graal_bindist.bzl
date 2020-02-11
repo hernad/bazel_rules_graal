@@ -59,6 +59,8 @@ def _get_platform(ctx):
         return "linux-amd64"
     elif ctx.os.name == "mac os x":
         return "darwin-amd64"
+    elif ctx.os.name == "windows 10":
+        return "windows-amd64"
     else:
         fail("Unsupported operating system: " + ctx.os.name)
 
@@ -84,6 +86,9 @@ def _graal_bindist_repository_impl(ctx):
         stripPrefix = archive_internal_prefix,
     )
 
+    if platform == "windows-amd64":
+        return "windows native-image not needed"
+        
     # download native image
     native_image_config = _graal_native_image_version_configs[version]
     native_image_sha = native_image_config["sha"][java_version][platform]
