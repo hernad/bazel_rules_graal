@@ -11,6 +11,8 @@ load(
     "OBJC_COMPILE_ACTION_NAME",
 )
 
+g_graal_native_image = "native-image"
+
 def _graal_binary_implementation(ctx):
     graal_attr = ctx.attr._graal
     graal_inputs, _, _ = ctx.resolve_command(tools = [graal_attr])
@@ -48,8 +50,16 @@ def _graal_binary_implementation(ctx):
 
     tool_paths = [c_compiler_path, ld_executable_path, ld_static_lib_path, ld_dynamic_lib_path]
     path_set = {}
+
+    if ctx.configuration.host_path_separator == ":":
+       slash = "/"
+    else:
+       slash = "\\"
+
     for tool_path in tool_paths:
-        tool_dir, _, _ = tool_path.rpartition("/")
+        print("tool_path=" + tool_path)
+        # https://docs.bazel.build/versions/master/skylark/lib/string.html#rpartition
+        tool_dir, _, _ = tool_path.rpartition(slash)
         path_set[tool_dir] = None
 
     paths = sorted(path_set.keys())
@@ -59,7 +69,7 @@ def _graal_binary_implementation(ctx):
         # in directories we might not otherwise include. For example,
         # on macOS, wrapped_ar calls dirname.
         if "/bin" not in path_set:
-            paths.append("/bin")
+            paths.append( "/bin")
             if "/usr/bin" not in path_set:
                 paths.append("/usr/bin")
     else:
@@ -108,6 +118,8 @@ def _graal_binary_implementation(ctx):
 
 def _graal_native_image():
     return "native-image.cmd"
+    #return "native-image"
+
 
 
 #g_graal_native_image = select({
