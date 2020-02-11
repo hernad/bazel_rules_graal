@@ -15,7 +15,7 @@ _graal_version_configs = {
         },
     },
     "19.3.1": {
-        "urls": ["https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-{version}/graalvm-ce-java{java_version}-{platform}-{version}.tar.gz"],
+        "urls": ["https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-{version}/graalvm-ce-java{java_version}-{platform}-{version}.{extension}"],
         "sha": {
             "8": {
                 "windows-amd64": "77eb35e88eee297bbaa63ca9856379d0ec31953370c8ea5168c8ee091b656a9f",
@@ -68,11 +68,15 @@ def _get_platform(ctx):
 def _graal_bindist_repository_impl(ctx):
     platform = _get_platform(ctx)
     version = ctx.attr.version
+    extension = "tar.gz"
+    if platform == "windows-amd64":
+       extension = "zip"
     java_version = ctx.attr.java_version
     format_args = {
         "version": version,
         "platform": platform,
         "java_version": java_version,
+	    "extension": extension
     }
 
     #Download graal
