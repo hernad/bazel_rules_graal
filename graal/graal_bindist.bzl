@@ -113,6 +113,7 @@ def _graal_bindist_repository_impl(ctx):
 
     ctx.file("BUILD", """exports_files(glob(["**/*"]))""")
     ctx.file("WORKSPACE", "workspace(name = \"{name}\")".format(name = ctx.name))
+    print("ctx.name=" + ctx.name)
 
 
 graal_bindist_repository = repository_rule(
