@@ -17,6 +17,7 @@ _graal_version_configs = {
         "urls": ["https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-{version}/graalvm-ce-java{java_version}-{platform}-{version}.tar.gz"],
         "sha": {
             "8": {
+                "windows-amd64": "77eb35e88eee297bbaa63ca9856379d0ec31953370c8ea5168c8ee091b656a9f",
                 "darwin-amd64": "eba3765174f0279ae2dc57c84fc0eb324da778dbfdcc03c6fa8381fe3728aef9",
                 "linux-amd64": "815385a1c35a1db54b9b9622059c9e8e5155460f65c3d713e55d3a84222c9194",
             },
