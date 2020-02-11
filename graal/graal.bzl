@@ -90,7 +90,7 @@ def _graal_binary_implementation(ctx):
 
     if windows:
         args.add("-H:CCompilerPath=\"%s\"" % c_compiler_path)
-    else
+    else:
         args.add("-H:CCompilerPath=%s" % c_compiler_path)
         
 
