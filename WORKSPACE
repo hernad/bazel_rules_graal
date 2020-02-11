@@ -1,5 +1,6 @@
 workspace(name = "rules_graal")
 
+
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
@@ -12,11 +13,12 @@ graal_bindist_repository(
 )
 
 git_repository(
-    name = "rules_adroit",
-    commit = "e98240c73746934b8cfcf05020f5e936aee5bd9f",
-    remote = "git://github.com/andyscott/rules_adroit",
+    name = "misc_rules",
+    commit = "0ad0b02af9e4b46717e8918c4c75b32eb71d9838",
+    remote = "git://github.com/andyscott/misc_rules",
 )
 
 register_toolchains(
-    "@rules_adroit//toolchains:shellcheck_from_host_path",
+	"@misc_rules//toolchains/shellcheck:shellcheck_from_host_path",
 )
+

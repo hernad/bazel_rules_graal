@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-default_bazel_version='0.26.1'
+default_bazel_version='host'
 
 if [ -z "$OVERRIDE_BAZEL_VERSION" ]; then
     bazel_version="$default_bazel_version"
