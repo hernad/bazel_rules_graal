@@ -91,6 +91,7 @@ def _graal_binary_implementation(ctx):
         env = env,
     )
 
+    
     return [DefaultInfo(
         executable = ctx.outputs.bin,
         files = depset(),
@@ -100,6 +101,17 @@ def _graal_binary_implementation(ctx):
             files = [],
         ),
     )]
+
+
+def _graal_native_image():
+    return "native-image.cmd"
+
+
+g_graal_native_image = select({
+        "@platforms//os:windows": "native-image.cmd",
+        "@platforms//os:linux": "native-image",
+        "@platforms//os:darwin": "native-image"
+    })
 
 graal_binary = rule(
     implementation = _graal_binary_implementation,
@@ -113,7 +125,7 @@ graal_binary = rule(
         "native_image_features": attr.string_list(),
         "_graal": attr.label(
             cfg = "host",
-            default = "@graal//:bin/native-image",
+            default = "@graal//:bin/" + _graal_native_image(),
             allow_files = True,
             executable = True,
         ),

@@ -1,15 +1,18 @@
 load("@rules_graal//graal:graal.bzl", "graal_binary")
+load("@rules_java//java:defs.bzl", "java_library")
 
 java_library(
     name = "main",
     #main_class = "Main",
-    srcs = glob(["Main.java"]),
+    srcs = ["Main.java"],
 )
 
 graal_binary(
     name = "main-native",
     deps = [":main"],
     main_class = "Main",
+    #_graal = "@graal/:bin/native-image.cmd",
+    data = []
 )
 
 
