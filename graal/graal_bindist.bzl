@@ -1,6 +1,7 @@
 _graal_archive_internal_prefixs = {
     "darwin-amd64": "graalvm-ce-java{java_version}-{version}/Contents/Home",
     "linux-amd64": "graalvm-ce-java{java_version}-{version}",
+    "windows-amd64": "graalvm-ce-java{java_version}-{version}",
 }
 
 _graal_version_configs = {
@@ -88,7 +89,7 @@ def _graal_bindist_repository_impl(ctx):
 
     if platform == "windows-amd64":
         return "windows native-image not needed"
-        
+
     # download native image
     native_image_config = _graal_native_image_version_configs[version]
     native_image_sha = native_image_config["sha"][java_version][platform]
