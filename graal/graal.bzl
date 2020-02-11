@@ -107,11 +107,11 @@ def _graal_native_image():
     return "native-image.cmd"
 
 
-g_graal_native_image = select({
-        "@platforms//os:windows": "native-image.cmd",
-        "@platforms//os:linux": "native-image",
-        "@platforms//os:darwin": "native-image"
-    })
+#g_graal_native_image = select({
+#        "@platforms//os:windows": "native-image.cmd",
+#        "@platforms//os:linux": "native-image",
+#        "@platforms//os:darwin": "native-image"
+#    })
 
 graal_binary = rule(
     implementation = _graal_binary_implementation,
