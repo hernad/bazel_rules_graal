@@ -51,10 +51,12 @@ def _graal_binary_implementation(ctx):
     tool_paths = [c_compiler_path, ld_executable_path, ld_static_lib_path, ld_dynamic_lib_path]
     path_set = {}
 
+    windows = False
     if ctx.configuration.host_path_separator == ":":
        slash = "/"
     else:
        slash = "\\"
+       windows = True
 
     for tool_path in tool_paths:
         print("tool_path=" + tool_path)
@@ -86,7 +88,11 @@ def _graal_binary_implementation(ctx):
     args.add("-cp", ":".join([f.path for f in classpath_depset.to_list()]))
     args.add("-H:Class=%s" % ctx.attr.main_class)
     args.add("-H:Name=%s" % ctx.outputs.bin.path)
-    args.add("-H:CCompilerPath=%s" % c_compiler_path)
+    if windows:
+        args.add("-H:CCompilerPath=\"%s\"" % c_compiler_path)
+    else
+        args.add("-H:CCompilerPath=%s" % c_compiler_path)
+        
 
     print(args)
 
