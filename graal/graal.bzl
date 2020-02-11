@@ -11,7 +11,6 @@ load(
     "OBJC_COMPILE_ACTION_NAME",
 )
 
-g_graal_native_image = "native-image"
 
 def _graal_binary_implementation(ctx):
     graal_attr = ctx.attr._graal
@@ -88,6 +87,7 @@ def _graal_binary_implementation(ctx):
     args.add("-cp", ":".join([f.path for f in classpath_depset.to_list()]))
     args.add("-H:Class=%s" % ctx.attr.main_class)
     args.add("-H:Name=%s" % ctx.outputs.bin.path)
+
     if windows:
         args.add("-H:CCompilerPath=\"%s\"" % c_compiler_path)
     else
