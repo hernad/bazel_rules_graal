@@ -13,7 +13,7 @@ load(
 
 
 def _graal_binary_implementation(ctx):
-    graal_attr = ctx.attr._graal
+    graal_attr = ctx.attr.graal
     graal_inputs, _, _ = ctx.resolve_command(tools = [graal_attr])
     graal = graal_inputs[0]
 
@@ -215,9 +215,9 @@ def _graal_binary_implementation(ctx):
     )]
 
 
-def _graal_native_image():
-    #return "native-image.cmd"
-    return "native-image.cmd"
+#def _graal_native_image():
+#    #return "native-image.cmd"
+#    return "native-image.cmd"
 
 
 
@@ -237,9 +237,10 @@ graal_binary = rule(
         "main_class": attr.string(),
         "initialize_at_build_time": attr.string_list(),
         "native_image_features": attr.string_list(),
-        "_graal": attr.label(
+        "graal": attr.label(
             cfg = "host",
-            default = "@graal//:bin/" + _graal_native_image(),
+            #default = "@graal//:bin/" + _graal_native_image(),
+            default = "@graal//:bin/native-image",
             allow_files = True,
             executable = True,
         ),
