@@ -135,9 +135,10 @@ def _graal_bindist_repository_impl(ctx):
         stripPrefix = archive_internal_prefix,
     )
 
-    if platform == "windows-amd64":
-        print("windows native-image not needed")
-    else:
+    #if platform == "windows-amd64":
+    #    print("windows native-image not needed")
+    #else:
+    if True:
         print("getting native-image ...")
         # download native image
         native_image_config = _graal_native_image_version_configs[version]
