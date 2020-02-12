@@ -217,7 +217,7 @@ def _graal_binary_implementation(ctx):
 
 def _graal_native_image():
     #return "native-image.cmd"
-    return "native-image"
+    return "native-image.cmd"
 
 
 
