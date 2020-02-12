@@ -8,8 +8,11 @@ load("@rules_graal//graal:graal_bindist.bzl", "graal_bindist_repository")
 
 graal_bindist_repository(
     name = "graal",
-    version = "19.3.1",
-    java_version = "8",
+    #version = "19.3.1",
+    #java_version = "8",
+    version = "20.1.0",
+    java_version = "11",
+    slash_dev = "-dev"
 )
 
 git_repository(

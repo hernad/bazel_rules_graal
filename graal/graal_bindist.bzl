@@ -1,10 +1,35 @@
+
+#Prefix "graalvm-ce-java11-20.1.0" was given, but not found in the archive. 
+# Here are possible prefixes for this archive: "graalvm-ce-java11-20.1.0-dev"
+
 _graal_archive_internal_prefixs = {
-    "darwin-amd64": "graalvm-ce-java{java_version}-{version}/Contents/Home",
-    "linux-amd64": "graalvm-ce-java{java_version}-{version}",
-    "windows-amd64": "graalvm-ce-java{java_version}-{version}",
+    "darwin-amd64": "graalvm-ce-java{java_version}-{version}{slash_dev}/Contents/Home",
+    "linux-amd64": "graalvm-ce-java{java_version}-{version}{slash_dev}",
+    "windows-amd64": "graalvm-ce-java{java_version}-{version}{slash_dev}",
 }
 
+
+#https://github.com/graalvm/graalvm-ce-dev-builds/releases/download/20.1.0-dev-20200212_0349/graalvm-ce-java11-windows-amd64-20.1.0-dev.zip
+
+#0d745be86b7711ac6df81fa631e6f577f987a9a1dff2008dc26ffbf5d34f8ab9  graalvm-ce-java11-linux-amd64-20.1.0-dev.tar.gz
+#26c98569fd2b2c9f9188b35c477c1245d522ae770091fe96ef1e61138328297f  graalvm-ce-java11-windows-amd64-20.1.0-dev.zip
+
+
 _graal_version_configs = {
+
+    "20.1.0": {
+        "urls": ["https://github.com/graalvm/graalvm-ce-dev-builds/releases/download/{version}-dev-20200212_0349/graalvm-ce-java{java_version}-{platform}-{version}-dev.{extension}"],
+        "sha": {
+            "8": {
+                "windows-amd64": "0",
+                "linux-amd64": "0",
+            },
+            "11": {
+                "windows-amd64": "26c98569fd2b2c9f9188b35c477c1245d522ae770091fe96ef1e61138328297f",
+                "linux-amd64": "0d745be86b7711ac6df81fa631e6f577f987a9a1dff2008dc26ffbf5d34f8ab9",
+            },
+        },
+    },
     "19.0.0": {
         "urls": ["https://github.com/oracle/graal/releases/download/vm-{version}/graalvm-ce-{platform}-{version}.tar.gz"],
         "sha": {
@@ -31,6 +56,24 @@ _graal_version_configs = {
 }
 
 _graal_native_image_version_configs = {
+    #https://github.com/graalvm/graalvm-ce-dev-builds/releases/download/20.1.0-dev-20200212_0349/native-image-installable-svm-java11-windows-amd64-20.1.0-dev.jar
+
+   #508b3c448fd1329f1d5347fce014f7bf30b0d8d396f3fdec34e357963ca5cf9f  native-image-installable-svm-java11-linux-amd64-20.1.0-dev.jar
+   #f3fd4a81da5961025b2b511714e9447431f0af3260c24e94f01ce0e46bc3446f  native-image-installable-svm-java11-windows-amd64-20.1.0-dev.jar
+
+    "20.1.0": {
+        "urls": ["https://github.com/graalvm/graalvm-ce-dev-builds/releases/download/{version}-dev-20200212_0349/native-image-installable-svm-java{java_version}-{platform}-{version}{slash_dev}.jar"],
+        "sha": {
+            "8": {
+                "darwin-amd64": "0",
+                "linux-amd64": "0",
+            },
+            "11": {
+                "windows-amd64": "f3fd4a81da5961025b2b511714e9447431f0af3260c24e94f01ce0e46bc3446f",
+                "linux-amd64": "508b3c448fd1329f1d5347fce014f7bf30b0d8d396f3fdec34e357963ca5cf9f",
+            },
+        },
+    },
     "19.0.0": {
         "urls": ["https://github.com/oracle/graal/releases/download/vm-{version}/native-image-installable-svm-{platform}-{version}.jar"],
         "sha": {
@@ -76,7 +119,8 @@ def _graal_bindist_repository_impl(ctx):
         "version": version,
         "platform": platform,
         "java_version": java_version,
-	    "extension": extension
+	    "extension": extension,
+        "slash_dev": ctx.attr.slash_dev
     }
 
     #Download graal
@@ -119,6 +163,7 @@ graal_bindist_repository = repository_rule(
     attrs = {
         "version": attr.string(mandatory = True),
         "java_version": attr.string(mandatory = True),
+        "slash_dev": attr.string(mandatory = True)
     },
     implementation = _graal_bindist_repository_impl,
 )
