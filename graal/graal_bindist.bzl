@@ -112,8 +112,13 @@ def _graal_bindist_repository_impl(ctx):
     platform = _get_platform(ctx)
     version = ctx.attr.version
     extension = "tar.gz"
+    cmd_dot_extension = ""
+    gu_cmd = "bin/gu" 
+
     if platform == "windows-amd64":
        extension = "zip"
+       gu_cmd = "bin/gu.cmd"
+       
     java_version = ctx.attr.java_version
     format_args = {
         "version": version,
@@ -151,7 +156,7 @@ def _graal_bindist_repository_impl(ctx):
             output = "native-image-installer.jar"
         )
 
-        exec_result = ctx.execute(["bin/gu", "install", "--local-file", "native-image-installer.jar"], quiet=False)
+        exec_result = ctx.execute([gu_cmd, "install", "--local-file", "native-image-installer.jar"], quiet=False)
         if exec_result.return_code != 0:
             fail("Unable to install native image:\n{stdout}\n{stderr}".format(stdout=exec_result.stdout, stderr=exec_result.stderr))
 
